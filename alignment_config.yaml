@@ -1,0 +1,77 @@
+
+
+# Basic configuration
+
+
+device:
+  #serial_port: "/dev/ttyACM0"   # Linux
+  # or
+  com_port: 3        # Windows
+  # baudrate:
+  #   Serial communication speed between PC and GSV-8.
+  #   Must match the device setting. Required for data streaming.
+  baudrate: 230400
+  # Data frequency of the amplifier (default: 50 Hz; recommended range: 10 Hz … 100 Hz)
+  sample_frequency: 50.0     # corresponds to a 20 ms sample period for one data frame
+
+view:
+  auto_scale: false        # true = dynamic auto scaling, false = fixed radius
+  fixed_radius: 1500       # e.g. 0.02 -> 20.000 µε, depends on calibration
+  refresh_ms: 200           # GUI refresh in ms; at the same time corresponds to the cycle time for polling the measurement values using GSV86readMultiple
+  mult_frames: 1000       # how many frames to pull at most per call (must be significantly larger than refresh_ms / sample period duration)
+
+# Assignment of channel numbers to the positions of the strain gauges;
+# Horizontal axis in plot is proportional to difference of e0 - e180 "strain gauge 1 - strain gauge 3" (is proportional to Mz)
+# Vertical axis in plot is proportional to difference of e90 - e270 "strain gauge 2 - strain gauge 4" (is proportional to My)
+channels:
+  section_map:
+    # Assignment of Strain gauges to Polar coordinates of 2D polar Plot
+    A:
+      e0: 1
+      e90: 2
+      e180: 3
+      e270: 4
+# Horizontal axis in plot is proportional to difference of e0 - e180 "strain gauge 5 - strain gauge 7" (is proportional to Mz)
+# Vertical axis in plot is proportional to difference of e90 - e270 "strain gauge 6 - strain gauge 8" (is proportional to My)
+    B:
+      e0: 5
+      e90: 6
+      e180: 7
+      e270: 8
+
+
+# Advanced configuration
+
+
+# Classification according to ASTM E1012
+alignment_classes:
+  classes_axial_strain_small:
+    - name: "Class 2"
+      eps_b_mag: 20
+      color: [ 144, 238, 144 ]   # light green
+    - name: "Class 5"
+      eps_b_mag: 50
+      color: [ 0, 150, 0 ]       # dark green
+    - name: "Class 10"
+      eps_b_mag: 100
+      color: [ 200, 200, 0 ]     # yellow
+    - name: "Class 20"
+      eps_b_mag: 200
+      color: [ 200, 120, 0 ]     # orange
+  classes_axial_strain_big:
+    - name: "Class 2"
+      max_percent: 2
+      color: [144, 238, 144]   # light green
+    - name: "Class 5"
+      max_percent: 5
+      color: [0, 150, 0]       # dark green
+    - name: "Class 10"
+      max_percent: 10
+      color: [200, 200, 0]     # yellow
+    - name: "Class 20"
+      max_percent: 20
+      color: [200, 120, 0]     # orange
+
+  out_of_class:
+    name: "Out of class"
+    color: [180, 0, 0]         # red
