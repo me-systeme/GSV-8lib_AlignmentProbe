@@ -124,7 +124,16 @@ device:
   sample_frequency: 50.0    
 ```
 
-This is an example for the Windows application. If you want to have a Linux application you have to set the `serial_port`.
+This is an example for the Windows application. If you want to have a Linux application you have to set the `serial_port`:
+
+```yaml
+device:
+  serial_port: "/dev/ttyACM0"   # Linux
+  # or
+  #com_port: 3        # Windows
+  baudrate: 230400
+  sample_frequency: 50.0    
+```
 
 ## Channel Mapping
 
@@ -250,6 +259,26 @@ alignment_config.yaml
 ```
 
 next to the EXE.
+
+#  Linux (Ubuntu) Dependencies for PyQt6
+
+When running the Alignment Viewer on Ubuntu or other Debian-based systems, Qt may require several system libraries for the `xcb platform plugin`.
+
+If these packages are missing, you may encounter errors such as:
+
+```lua
+qt.qpa.plugin: Could not load the Qt platform plugin "xcb"
+```
+
+To install all required system libraries, run:
+
+```bash
+sudo apt update
+sudo apt install \
+    libxcb-cursor0 \
+    libxkbcommon-x11-0 \
+    libxcb-xinerama0
+```
 
 # 🔧 Notes for Developers
 
