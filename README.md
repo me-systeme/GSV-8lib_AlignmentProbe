@@ -1,8 +1,8 @@
-# Alignment Viewer – Real-Time ASTM E1012 Bending & Alignment Visualization
+# Alignment Probe – Real-Time ASTM E1012 Bending & Alignment Visualization
 
 ## 📌 Introduction
 
-The **Alignment Viewer** is a Python application for Windows and Linux for real-time visualization of strain-gauge data from a ME-Systeme **GSV-8** measurement amplifier.
+The **Alignment Probe** is a Python application for Windows and Linux for real-time visualization of strain-gauge data from a ME-Systeme **GSV-8** measurement amplifier.
 It uses the gsv8lib library (https://github.com/me-systeme/gsv8lib) for native serial communication and provides live evaluation according to ASTM E1012.
 
 It is intended for:
@@ -15,7 +15,7 @@ It is intended for:
 
 <figure>
   <img src="screenshots/maininterface.png" alt="Main UI">
-  <figcaption>Figure 1: The Alignment Viewer main interface.</figcaption>
+  <figcaption>Figure 1: The Alignment Probe main interface.</figcaption>
 </figure>
 
 ---
@@ -62,7 +62,7 @@ It is intended for:
 
 # 🚀 Getting Started
 
-In order to start up the Alignment Viewer you can download a zip file of the repository with the following link: https://github.com/me-systeme/GSV-8lib_AlignmentProbe/archive/refs/heads/main.zip. If you have git installed you can also copy the repository in your working directory with
+In order to start up the Alignment Probe you can download a zip file of the repository with the following link: https://github.com/me-systeme/GSV-8lib_AlignmentProbe/archive/refs/heads/main.zip. If you have git installed you can also copy the repository in your working directory with
 
 ```bash
 git clone https://github.com/me-systeme/GSV-8lib_AlignmentProbe.git
@@ -216,7 +216,7 @@ pip install --upgrade git+https://github.com/me-systeme/gsv8lib.git
 
 Use this command:
 ```bash
-pyinstaller --onefile --name AlignmentViewer_GSV8LIB ^ --add-data alignment_config.yaml;. alignment_viewer.py
+pyinstaller --onefile --name AlignmentProbe_GSV8LIB ^ --add-data alignment_config.yaml;. alignment_viewer.py
 ```
 
 Explanation:
@@ -262,7 +262,7 @@ next to the EXE.
 
 #  Linux (Ubuntu) Dependencies for PyQt6
 
-When running the Alignment Viewer on Ubuntu or other Debian-based systems, Qt may require several system libraries for the `xcb platform plugin`.
+When running the Alignment Probe on Ubuntu or other Debian-based systems, Qt may require several system libraries for the `xcb platform plugin`.
 
 If these packages are missing, you may encounter errors such as:
 
