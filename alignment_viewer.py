@@ -487,38 +487,58 @@ class BendingView(QtWidgets.QWidget):
     # -----------------------------
     def _read_values(self):
         """
-        Read one measurement frame from the GSV-8 via gsv8lib.
+        Read all newly received measurement frames using ReadMultiple() and return
+        a single consolidated channel dictionary.
 
-        We assume the measurement object returned by ReadValue()
-        provides getChannel1(), getChannel2(), … as in example_record.py.
+        Behavior:
+        - Fetches all frames accumulated since the previous call (up to mult_frames).
+        - Uses only the most recent frame for live display (minimal latency).
+        - Maps gsv8lib keys "channel0".."channel7" to CHANNELS 1..8.
+        - Falls back to the last valid values if no new frame is available.
+        - Preserves robustness against unexpected frame structure.
+
+        Returns
+        -------
+        dict : {channel_number (int): value (float)}
+            Latest complete measurement for all configured channels.
         """
         try:
-            measurement = self._dev.ReadValue()
+            frames = self._dev.ReadMultiple(max_count=self.mult_frames)
         except Exception as e:
             self._empty_reads += 1
             # On error, return last valid values
-            print(f"ReadValue() error: {e}")
+            print(f"ReadMultiple() error: {e}")
             return dict(self._last_vals)
 
-        if measurement is None:
+        if frames is None:
             self._empty_reads += 1
             return dict(self._last_vals)
 
+        # Use only the most recent frame
+        last_frame = frames[-1]
+
+        try:
+            _ts, values, inputOverload, sixAxisError = last_frame
+        except ValueError:
+            print("Unexpected frame format in ReadMultiple()")
+            return dict(self._last_vals)
+        
+        if not isinstance(values, dict):
+            return dict(self._last_vals)
+        
         vals = {}
         try:
             for ch in CHANNELS:
-                getter_name = f"getChannel{ch}"
-                getter = getattr(measurement, getter_name, None)
-                if getter is None:
-                    raise AttributeError(
-                        f"Measurement object has no method {getter_name}()"
-                    )
-                vals[ch] = float(getter())
+                key = f"channel{ch-1}"  # GSV-8 uses zero-based channel keys
+                if key in values:
+                    vals[ch] = float(values[key])
+                else:
+                    vals[ch] = self._last_vals.get(ch, 0.0)
         except Exception as e:
             self._empty_reads += 1
             print(f"Error extracting channels from measurement: {e}")
             return dict(self._last_vals)
-
+        
         self._empty_reads = 0
         self._last_vals = dict(vals)
         return vals
