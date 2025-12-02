@@ -3,7 +3,7 @@
 ## 📌 Introduction
 
 The **Alignment Probe** is a Python application for Windows and Linux for real-time visualization of strain-gauge data from a ME-Systeme **GSV-8** measurement amplifier.
-It uses the gsv8lib library (https://github.com/me-systeme/gsv8lib) for native serial communication and provides live evaluation according to ASTM E1012.
+It uses the gsv86lib library (https://github.com/me-systeme/gsv86lib) for native serial communication and provides live evaluation according to ASTM E1012.
 
 It is intended for:
 
@@ -95,7 +95,7 @@ pip install pyqtgraph PyQt6 pyyaml numpy
 ```
 
 ```bash 
-pip install --upgrade git+https://github.com/me-systeme/gsv8lib.git
+pip install --upgrade git+https://github.com/me-systeme/gsv86lib.git
 ```
 
 Run the program:
@@ -208,7 +208,7 @@ Changes apply immediately without restarting the application.
 pip install pyinstaller pyqt6 pyqtgraph numpy pyyaml
 ```
 ```bash 
-pip install --upgrade git+https://github.com/me-systeme/gsv8lib.git
+pip install --upgrade git+https://github.com/me-systeme/gsv86lib.git
 ```
 
 
@@ -216,7 +216,7 @@ pip install --upgrade git+https://github.com/me-systeme/gsv8lib.git
 
 Use this command:
 ```bash
-pyinstaller --onefile --name AlignmentProbe_GSV8LIB ^ --add-data alignment_config.yaml;. alignment_viewer.py
+pyinstaller --onefile --name AlignmentProbe_GSV86LIB ^ --add-data alignment_config.yaml;. alignment_viewer.py
 ```
 
 Explanation:
@@ -245,7 +245,7 @@ The EXE already contains:
 - Python runtime
 - All necessary dependencies
 - Default YAML configuration
-- Embedded `gsv8lib`
+- Embedded `gsv86lib`
 
 End users **do not** need:
 

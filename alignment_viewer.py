@@ -1,21 +1,21 @@
 """
-alignment_viewer_gsv8_stream.py
+alignment_viewer.py
 -------------------------------
 
 Real-time alignment and bending visualization tool for ASTM E1012 compliance.
-Acquires strain-gauge data from a ME-Systeme GSV-8 device via the gsv8lib
+Acquires strain-gauge data from a ME-Systeme GSV-8 device via the gsv86lib
 (serial communication, streaming mode with StartTransmission) and visualizes
 bending strain on two orthogonal planes with color-coded alignment classes.
 
 Features:
-- Live data capture (8 channels, streaming via gsv8lib.StartTransmission)
+- Live data capture (8 channels, streaming via gsv86lib.StartTransmission)
 - Axial and bending strain computation (see axial_bending.py)
 - Color-coded ASTM E1012 alignment classes (Class 1 … Out of class)
 - High-performance live visualization using PyQtGraph
 - Optional auto-scaling of bending radius
 - Robust device initialization and safe shutdown
 
-This is the gsv8lib streaming variant, analogous to the DLL-based version
+This is the gsv86lib streaming variant, analogous to the DLL-based version
 (https://github.com/me-systeme/GSV-8_AlignmentProbe) using
 GSV86startTX / GSV86readMultiple.
 
@@ -35,8 +35,8 @@ from PyQt6 import QtWidgets, QtCore, QtGui
 import pyqtgraph as pg
 import pyqtgraph.exporters
 
-# gsv8 library from https://github.com/me-systeme/gsv8lib
-from gsv8lib import gsv8
+# gsv86 library from https://github.com/me-systeme/gsv86lib
+from gsv86lib import gsv86
 
 pg.setConfigOption('background', 'w')   # white background
 pg.setConfigOption('foreground', 'k')   # black lines/text
@@ -169,19 +169,19 @@ def classify_alignment(value: float, eps_ax: float):
     return name, rgb
 
 # -----------------------------
-# GSV-8 device via gsv8lib
+# GSV-8 device via gsv86lib
 # -----------------------------
-def init_device() -> gsv8:
+def init_device() -> gsv86:
     """
-    Create and configure the GSV-8 device via gsv8lib.
+    Create and configure the GSV-8 device via gsv86lib.
 
     We follow the pattern from example_record.py:
-        dev = gsv8("/dev/ttyACM0", 230400)
+        dev = gsv86("/dev/ttyACM0", 230400)
         measurement = dev.ReadValue()
         print(measurement.getChannel1())
     """
-    print(f"Connecting to GSV-8 via gsv8lib on {PORT} @ {BAUDRATE} baud ...")
-    dev = gsv8(PORT, BAUDRATE)
+    print(f"Connecting to GSV-8 via gsv86lib on {PORT} @ {BAUDRATE} baud ...")
+    dev = gsv86(PORT, BAUDRATE)
 
     # Optional: set data rate if supported by the device
     try:
@@ -201,7 +201,7 @@ def init_device() -> gsv8:
 
     # small delay to allow buffer fill (optional)
     time.sleep(0.05)
-    print("Device initialized via gsv8lib.")
+    print("Device initialized via gsv86lib.")
 
     return dev
 
@@ -209,11 +209,11 @@ def init_device() -> gsv8:
 # GUI – PyQtGraph
 # -----------------------------
 class BendingView(QtWidgets.QWidget):
-    def __init__(self, device: gsv8, parent=None):
+    def __init__(self, device: gsv86, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Bending vectors – planes A & B")
 
-        self._dev = device  # gsv8 device instance
+        self._dev = device  # gsv86 device instance
 
         # --- view settings (runtime adjustable) ---
         self.auto_scale = AUTO_SCALE
@@ -483,7 +483,7 @@ class BendingView(QtWidgets.QWidget):
         # self.txtB.setPos(-rB, rB)
 
     # -----------------------------
-    # Data acquisition via gsv8lib
+    # Data acquisition via gsv86lib
     # -----------------------------
     def _read_values(self):
         """
@@ -493,7 +493,7 @@ class BendingView(QtWidgets.QWidget):
         Behavior:
         - Fetches all frames accumulated since the previous call (up to mult_frames).
         - Uses only the most recent frame for live display (minimal latency).
-        - Maps gsv8lib keys "channel0".."channel7" to CHANNELS 1..8.
+        - Maps gsv86lib keys "channel0".."channel7" to CHANNELS 1..8.
         - Falls back to the last valid values if no new frame is available.
         - Preserves robustness against unexpected frame structure.
 
