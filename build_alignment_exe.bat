@@ -6,8 +6,8 @@ echo Installing dependencies (if needed)...
 REM Install PyInstaller + required libs
 pip install pyinstaller pyqt6 pyqtgraph numpy pyyaml
 
-REM Install gsv86lib directly from GitHub (not a PyPI package!)
-pip install --upgrade git+https://github.com/me-systeme/gsv86lib.git
+REM Install gsv86lib directly from PyPI
+pip install --upgrade gsv86lib
 
 echo.
 echo Building AlignmentViewer_GSV86LIB.exe...

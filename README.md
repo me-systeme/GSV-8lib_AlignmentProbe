@@ -95,7 +95,7 @@ pip install pyqtgraph PyQt6 pyyaml numpy
 ```
 
 ```bash 
-pip install --upgrade git+https://github.com/me-systeme/gsv86lib.git
+pip install --upgrade gsv86lib
 ```
 
 Run the program:
@@ -208,7 +208,7 @@ Changes apply immediately without restarting the application.
 pip install pyinstaller pyqt6 pyqtgraph numpy pyyaml
 ```
 ```bash 
-pip install --upgrade git+https://github.com/me-systeme/gsv86lib.git
+pip install --upgrade gsv86lib
 ```
 
 
