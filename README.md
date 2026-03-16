@@ -287,3 +287,7 @@ sudo apt install \
 - Heartbeat timer ensures responsive SIGINT handling
 - Layout is optimized for balancing info visibility and plot size
 - Auto-scale transitions are smoothed for stable visualization
+
+## License
+
+This project is licensed under the MIT License – see the LICENSE file for details.
